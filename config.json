@@ -1,0 +1,28 @@
+{
+  "name":"Litebans",
+  "admin_menus": {
+    "GLOBAL__CUSTOMIZE": {
+      "Utilisateur": {
+        "icon": "user",
+        "route": "/admin/liteban"
+      }
+    }
+  },
+  "navbar_routes": {
+    "Liteban": "/sanction"
+  },
+  "author":"Linedev",
+  "version":"1.0.0",
+  "apiID":-1,
+  "useEvents":false,
+  "permissions" : {
+    "available" : [],
+    "default" : {
+      "0" : [],
+      "2" : []
+    }
+  },
+  "requirements" : {
+    "CMS" : "^1.8.0"
+  }
+}
