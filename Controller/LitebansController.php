@@ -1,38 +1,71 @@
 <?php
-class LitebansController extends LitebansAppController{
 
-    public function index(){
+class LitebansController extends LitebansAppController
+{
 
-        // Chargement du Model Tutorial
-        $this->loadModel('Litebans.Bans');
+//    public $paginate = array(
+//        'limit' => 1,
+//        'paramType' => 'querystring'
+//    );
 
-        //On enregistre dans $datas le contenu de toute la table tutorial
-        $datas = $this->Bans->find('all');
-
-        //On passe la variable à la vue afin de pouvoir la réutiliser dans index.ctp
-        $this->set(compact('datas'));
-
-        //Pour passer plusieurs variable à la vue :
-        //$this->set(compact('datas', 'variable', 'infos'));
-
-        //Pour donner un titre à votre page : Dans le html <title> Titre <title>
+    public function index()
+    {
         $this->set('title_for_layout', 'Titre');
-    }
-    public function bans(){
 
-        // Chargement du Model Tutorial
         $this->loadModel('Litebans.Bans');
+        $this->DataTable = $this->Components->load('DataTable');
+        $this->modelClass = 'Bans';
+        $this->DataTable->initialize($this);
 
-        //On enregistre dans $datas le contenu de toute la table tutorial
-        $bans = $this->Bans->find('all');
+        $this->paginate = array(
+            'fields' => array('Bans.id', 'Bans.ip', 'Bans.reason', 'Bans.uuid'),
+            'order' => 'id DESC',
+            'limit' => 10,
+            'recursive' => 1,
+        'paramType' => 'querystring'
+        );
 
-        //On passe la variable à la vue afin de pouvoir la réutiliser dans index.ctp
+        $this->loadModel('Litebans.History');
+        $this->modelClass = 'History';
+
+        $bans = $this->paginate('Bans');
+        for ($i = 0, $iMax = count($bans); $i <= $iMax; $i++) {
+            $name = $this->History->getUuid($bans[$i]['Bans']['uuid']);
+            $bans[$i]['Bans']['name'] = $name['History']['name'];
+        }
         $this->set(compact('bans'));
 
-        //Pour passer plusieurs variable à la vue :
-        //$this->set(compact('datas', 'variable', 'infos'));
 
-        //Pour donner un titre à votre page : Dans le html <title> Titre <title>
-        $this->set('title_for_layout', 'Litebans - Bans');
+    }
+
+    public function getBans()
+    {
+
+        $this->autoRender = false;
+        $this->response->type('json');
+
+        $this->loadModel('Litebans.Bans');
+        $this->DataTable = $this->Components->load('DataTable');
+        $this->modelClass = 'Bans';
+        $this->DataTable->initialize($this);
+
+        $this->paginate = array(
+            'fields' => array('Bans.id', 'Bans.ip', 'Bans.reason', 'Bans.uuid'),
+            'order' => 'id DESC',
+            'recursive' => 1
+        );
+        $this->DataTable->mDataProp = true;
+
+
+        $this->loadModel('Litebans.History');
+        $this->modelClass = 'History';
+        $response = $this->DataTable->getResponse();
+
+
+        for ($i = 0, $iMax = count($response['aaData']); $i <= $iMax; $i++) {
+            $name = $this->History->getUuid($response['aaData'][$i]['Bans']['uuid']);
+            $response['aaData'][$i]['Bans']['uuid'] = $name['History']['name'];
+        }
+        $this->response->body(json_encode($response));
     }
 }
