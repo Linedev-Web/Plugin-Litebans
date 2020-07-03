@@ -9,7 +9,7 @@
     }
   },
   "navbar_routes": {
-    "Liteban": "/sanction"
+    "Liteban": "/sanctions"
   },
   "author":"Linedev",
   "version":"1.0.0",

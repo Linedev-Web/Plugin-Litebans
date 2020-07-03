@@ -4,7 +4,7 @@
         <div class="col-md-12">
 
             <div class="container-background">
-                <?= $this->Html->image('bg/wiki.jpeg', array('alt' => 'vote', 'classe' => 'img-responsive')); ?>
+                <?= $this->Html->image('bg/sanctions.jpg', array('alt' => 'vote', 'classe' => 'img-responsive')); ?>
             </div>
             <div class="container">
                 <div class="row">
@@ -14,31 +14,37 @@
                     <div class="col-md-12">
 
                         <ul class="nav nav-tabs" id="litebans--nav" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active">Bans</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link">Mutes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link">Kicks</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link">Warnings</a>
-                                </li>
+                            <li class="nav-item">
+                                <a href="<?= $this->Html->url(array('action' => 'index')) ?>" class="nav-link active">Ban</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="sanctions/mutes" class="nav-link">Mutes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="sanctions/mutes" class="nav-link">Kicks</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="sanctions/mutes" class="nav-link">Warnings</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-sm-12">
-                        <form class="form-inline"
-                              action="<?= $this->Html->url(array('controller' => 'profile', 'action' => 'index')) ?>"
-                              method="get">
+                        <form class="form-inline litebans--form-search"
+                              action="<?= $this->Html->url(array('controller' => 'litebans', 'action' => 'getSearchPseudo', 'plugin' => 'litebans')) ?>"
+                              method="post" autocomplete="off" data-ajax="true">
 
-                            <div class="form-group mx-sm-3 mb-2">
+                            <div class="form-group">
                                 <label for="search" class="sr-only">Pseudo</label>
-                                <input type="search" class="form-control" id="search" name="search"
-                                       placeholder="Pseudo">
+                                <input type="text" class="form-control" id="search" name="search"
+                                       placeholder="Rechercher un pseudo">
                             </div>
-                            <button type="submit" class="btn btn-primary">Rechercher</button>
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                            <div class="litebans--infos-search">
+                                <div class="ajax-msg"></div>
+                                <div id="search-list" class="">
+                                    <ul></ul>
+                                </div>
+                            </div>
                         </form>
                         <table class="table">
                             <thead>
@@ -48,14 +54,14 @@
                                 <th>Raison</th>
                                 <th>Date de début</th>
                                 <th>Date de fin</th>
-                                <th>Active</th>
+                                <th>Actif</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php foreach ($bans as $key => $value): ?>
                                 <tr>
                                     <td>
-                                        <a href="/sanction/profile?search=<?= $value['Bans']['name'] ?>"
+                                        <a href="/sanctions/profile?search=<?= $value['Bans']['name'] ?>"
                                            class="liteban--user">
                                             <img src="https://crafatar.com/avatars/<?= $value['Bans']['uuid'] ?>?size=32"
                                                  alt="<?= $value['Bans']['name'] ?>"
@@ -82,7 +88,7 @@
                                     <td> <?= $value['Bans']['date_fin'] ?>
                                         <?php if ($value['Bans']['date_reset']): ?>
                                             <small>
-                                                Temps restant : <?= $value['Bans']['date_reset'] ?>
+                                                Temps restants : <?= $value['Bans']['date_reset'] ?>
                                             </small>
                                         <?php endif; ?>
                                     </td>
@@ -110,3 +116,49 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('#search').keyup(function () {
+            event.preventDefault()
+            let searchList = $('#search-list')
+            let input = $(this).val()
+            let element = {}
+            element['search'] = input
+            if (input.length >= 3) {
+                $.post("<?= $this->Html->url(array('controller' => 'litebans', 'action' => 'getSearchPseudo', 'plugin' => 'litebans')) ?>", element, function (data) {
+                    $('.litebans--form-search').find('.ajax-msg').removeClass('error').empty()
+                    if (data.statut) {
+                        searchList.find('ul').empty();
+                        if (data.list) {
+                            for (let i = 0; i <= data.list.length; i++) {
+                                if (data.list[i] !== undefined) {
+                                    searchList.find('ul').append('<li><a href="#" class="search-pseudo" data-pseudo=' + data.list[i].name + '><i class="fa fa-search"></i>' + data.list[i].name + '</a></li>')
+                                }
+                            }
+                        }
+                        if (data.slug) {
+                            document.location.href = data.slug;
+                        }
+                        $('.search-pseudo').on('click', function () {
+                            event.preventDefault()
+                            let search = $(this).data('pseudo')
+                            $('#search').val(search)
+                            $('#search').attr('value', search)
+                            document.location.href = '/sanctions/profile?search=' + search;
+                        })
+                    } else if (!data.statut && data.list) {
+                        searchList.find('ul').empty();
+                        $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur : </b>'+data.msg);
+                    } else if (!data.statut) {
+                        $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur : </b>'+data.msg);
+                    } else {
+                        $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur : </b>'+data.msg);
+                    }
+                });
+            } else {
+                $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur :</b> Minimum 3 caractère');
+                searchList.find('ul').empty();
+            }
+        })
+    })
+</script>

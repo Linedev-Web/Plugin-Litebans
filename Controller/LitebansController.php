@@ -44,10 +44,47 @@ class LitebansController extends LitebansAppController
             }
             // Date time
             if (isset($bans[$i]['Bans']['time']) and isset($bans[$i]['Bans']['until'])) {
-                $bans[$i]['Bans']['date_reset'] = $this->dateStarAndDateEnd($bans[$i]['Bans']['time'], $bans[$i]['Bans']['until']);
+                $bans[$i]['Bans']['date_reset'] = $this->dateStarAndDateEnd($bans[$i]['Bans']['until']);
             }
         }
         $this->set(compact('bans'));
     }
 
+    public function getSearchPseudo()
+    {
+
+        if ($this->request->is('post')) {
+            $this->response->type('json');
+            $this->autoRender = false;
+
+            $this->loadModel('Litebans.History');
+
+
+            if (!empty($this->request->data['search'])) {
+                $name = $this->request->data['search'];
+                if (strlen($name) >= 3) {
+                    $list = $this->History->getAllName($name);
+                    if (!empty($list)) {
+                        $listSearch = [];
+                        for ($i = 0, $iMax = count($list); $i <= $iMax; $i++) {
+                            if (isset($list[$i]['History']['name'])) {
+                                $listSearch[$i]['name'] = $list[$i]['History']['name'];
+                            }
+                        }
+                        if ($name === $list[0]['History']['name']) {
+                            $this->response->body(json_encode(array('statut' => true, 'slug' => '/sanctions/profile?search=' . $name, 'msg' => 'Joueur trouver')));
+                        } else {
+                            $this->response->body(json_encode(array('statut' => true, 'list' => $listSearch, 'msg' => 'Joueur introuvale')));
+                        }
+                    } else {
+                        $this->response->body(json_encode(array('statut' => true, 'msg' => 'Joueur introuvale')));
+                    }
+                } else {
+                    $this->response->body(json_encode(array('statut' => false, 'msg' => 'Minimum 3 caractère')));
+                }
+            } else {
+                $this->response->body(json_encode(array('statut' => false, 'msg' => 'Champs obligatoire')));
+            }
+        }
+    }
 }

@@ -18,6 +18,15 @@ class History extends LitebansAppModel
         return $this->findByName($name);
     }
 
+    public function getAllName($name)
+    {
+        return $this->find('all', array(
+            'fields' => 'name',
+            'conditions' => array('History.name LIKE' => '%' . $name . '%'),
+            'limit' => 15
+        ));
+    }
+
     public function getUuid($uuid)
     {
         return $this->findByUuid($uuid);

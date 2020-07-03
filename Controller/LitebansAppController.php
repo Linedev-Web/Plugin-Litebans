@@ -34,13 +34,12 @@ class LitebansAppController extends AppController
      * @param int
      * @return string
      */
-    function dateStarAndDateEnd($dateStartTime, $dateEndTime)
+    function dateStarAndDateEnd($dateEndTime)
     {
         if ($dateEndTime != -1 && $dateEndTime != 0) {
             $date_format = '%Y-%m-%d %H:%M:%S';
-            $ts = $dateStartTime / 1000;
             $te = $dateEndTime / 1000;
-            $dateStart = new DateTime(strftime($date_format, $ts));
+            $dateStart = new DateTime(date("Y-m-d H:i:s"));
             $dateEnd = new DateTime(strftime($date_format, $te));
             $diff = $dateStart->diff($dateEnd);
             return $this->format_interval($diff);
@@ -66,16 +65,16 @@ class LitebansAppController extends AppController
             $result .= $interval->format("%m mois ");
         }
         if ($interval->d) {
-            $result .= $interval->format("%d jour ");
+            $result .= $interval->format("%d jour(s) ");
         }
         if ($interval->h) {
-            $result .= $interval->format("%h heures ");
+            $result .= $interval->format("%hh");
         }
         if ($interval->i) {
-            $result .= $interval->format("%i minutes ");
+            $result .= $interval->format("%i m ");
         }
         if ($interval->s) {
-            $result .= $interval->format("%s secondes ");
+            $result .= $interval->format("%s s ");
         }
 
         return $result;
@@ -89,31 +88,9 @@ class LitebansAppController extends AppController
     function millis_to_date($millis)
     {
 
-        $date_format = '%B %d, %Y, %H:%M';
-
-        $date_month_translations = array(
-            "January" => "janvier",
-            "February" => "février",
-            "March" => "mars",
-            "April" => "avril",
-            "May" => "mai",
-            "June" => "juin",
-            "July" => "juillet",
-            "August" => "août",
-            "September" => "septembre",
-            "October" => "octobre",
-            "November" => "novembre",
-            "December" => "décembre",
-        );
-
+        $date_format = '%d-%m-%Y  %H:%M';
         $ts = $millis / 1000;
         $result = strftime($date_format, $ts);
-        $translations = $date_month_translations;
-        if ($translations !== null) {
-            foreach ($translations as $key => $val) {
-                $result = str_replace($key, $val, $result);
-            }
-        }
         return $result;
     }
 
