@@ -5,21 +5,20 @@ class WarningsController extends LitebansAppController
 
     public function index()
     {
-        $this->set('title_for_layout', 'Titre');
+        $this->set('title_for_layout', $this->Lang->get('LITEBANS__TITLE') .'/'. $this->Lang->get('LITEBANS__WARNINGSS'));
 
         $this->loadModel('Litebans.Warnings');
+        $this->loadModel('Litebans.History');
 
         $this->paginate = array(
             'fields' => array('Warnings.id', 'Warnings.banned_by_name', 'Warnings.reason', 'Warnings.time', 'Warnings.until', 'Warnings.active', 'Warnings.uuid'),
             'order' => 'id DESC',
             'limit' => 10,
             'recursive' => 1,
-            'paramType' => 'querystring'
+            'paramType' => 'querystring',
         );
-
-        $this->loadModel('Litebans.History');
-
         $warnings = $this->paginate('Warnings');
+
         for ($i = 0, $iMax = count($warnings); $i <= $iMax; $i++) {
             // Name
             if (isset($warnings[$i]['Warnings']['uuid'])) {
@@ -29,14 +28,15 @@ class WarningsController extends LitebansAppController
 
             // Date
             if (isset($warnings[$i]['Warnings']['time'])) {
-                $warnings[$i]['Warnings']['time'] = $this->millis_to_date($warnings[$i]['Warnings']['time']);
+                $warnings[$i]['Warnings']['date_debut'] = $this->millis_to_date($warnings[$i]['Warnings']['time']);
 
             }
 
             // Date expiry
             if (isset($warnings[$i]['Warnings']['until'])) {
-                $warnings[$i]['Warnings']['until'] = $this->expiry($warnings[$i]['Warnings']['until']);
-
+                $warnings[$i]['Warnings']['date_fin'] = $this->expiry($warnings[$i]['Warnings']['until']);
+                // Date time
+                $warnings[$i]['Warnings']['date_reset'] = $this->dateStarAndDateEnd($warnings[$i]['Warnings']['until']);
             }
         }
         $this->set(compact('warnings'));

@@ -9,20 +9,20 @@
                 <div class="container" data-aos="fade-up">
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <h1 class="page--title"><?= $Lang->get('LITEBANS__TITLE') ?> / <?= $Lang->get('LITEBANS__BANSS') ?></h1>
+                            <h1 class="page--title"><?= $Lang->get('LITEBANS__TITLE') ?> / <?= $Lang->get('LITEBANS__KICKSS') ?></h1>
                         </div>
                         <div class="col-md-12">
 
                             <ul class="nav nav-tabs" id="litebans--nav" role="tablist">
                                 <li class="nav-item">
-                                    <a href="<?= $this->Html->url(array('action' => 'index')) ?>"
-                                       class="nav-link active"><?= $Lang->get('LITEBANS__BANSS') ?></a>
+                                    <a href="/sanctions/bans"
+                                       class="nav-link"><?= $Lang->get('LITEBANS__BANSS') ?></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/sanctions/mutes" class="nav-link"><?= $Lang->get('LITEBANS__MUTESS') ?></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/sanctions/kicks" class="nav-link"><?= $Lang->get('LITEBANS__KICKSS') ?></a>
+                                    <a href="/sanctions/kicks" class="nav-link active"><?= $Lang->get('LITEBANS__KICKSS') ?></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/sanctions/warnings" class="nav-link"><?= $Lang->get('LITEBANS__WARNINGSS') ?></a>
@@ -52,63 +52,47 @@
                                     <thead>
                                     <tr>
                                         <th><?= $Lang->get('LITEBANS__PSEUDO') ?></th>
-                                        <th><?= $Lang->get('LITEBANS__BANSBY') ?></th>
+                                        <th><?= $Lang->get('LITEBANS__KICKSBY') ?></th>
                                         <th><?= $Lang->get('LITEBANS__REASON') ?></th>
                                         <th><?= $Lang->get('LITEBANS__DATESTART') ?></th>
-                                        <th><?= $Lang->get('LITEBANS__DATEEND') ?></th>
-                                        <th><?= $Lang->get('LITEBANS__ACTIF') ?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php $i=0; foreach ($bans as $key => $value): $i++ ?>
+                                    <?php $i = 0;
+                                    foreach ($kicks as $key => $value): $i++ ?>
                                         <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0">
                                             <td>
-                                                <a href="/sanctions/profile?search=<?= $value['Bans']['name'] ?>"
+                                                <a href="/sanctions/profile?search=<?= $value['Kicks']['name'] ?>"
                                                    class="liteban--user">
-                                                    <img src="https://crafatar.com/avatars/<?= $value['Bans']['uuid'] ?>?size=32"
-                                                         alt="<?= $value['Bans']['name'] ?>"
-                                                         title="<?= $value['Bans']['name'] ?>">
-                                                    <span><?= $value['Bans']['name'] ?></span>
+                                                    <img src="https://crafatar.com/avatars/<?= $value['Kicks']['uuid'] ?>?size=32"
+                                                         alt="<?= $value['Kicks']['name'] ?>"
+                                                         title="<?= $value['Kicks']['name'] ?>">
+                                                    <span><?= $value['Kicks']['name'] ?></span>
                                                 </a>
                                             </td>
                                             <td>
-                                                <?php if ($value['Bans']['banned_by_name'] == 'Console'): ?>
+                                                <?php if ($value['Kicks']['banned_by_name'] == 'Console'): ?>
                                                     <img src="https://crafatar.com/avatars/f78a4d8d-d51b-4b39-98a3-230f2de0c670?size=32"
-                                                         alt="<?= $value['Bans']['banned_by_name'] ?>"
-                                                         title="<?= $value['Bans']['banned_by_name'] ?>">
+                                                         alt="<?= $value['Kicks']['banned_by_name'] ?>"
+                                                         title="<?= $value['Kicks']['banned_by_name'] ?>">
                                                 <?php else: ?>
                                                     <div class="liteban--user">
-                                                        <img src="https://crafatar.com/avatars/<?= $value['Bans']['uuid'] ?>?size=32"
-                                                             alt="<?= $value['Bans']['name'] ?>"
-                                                             title="<?= $value['Bans']['name'] ?>">
-                                                        <span><?= $value['Bans']['banned_by_name'] ?></span>
+                                                        <img src="https://crafatar.com/avatars/<?= $value['Kicks']['uuid'] ?>?size=32"
+                                                             alt="<?= $value['Kicks']['name'] ?>"
+                                                             title="<?= $value['Kicks']['name'] ?>">
+                                                        <span><?= $value['Kicks']['banned_by_name'] ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                             </td>
-                                            <td> <?= $value['Bans']['reason'] ?></td>
-                                            <td> <?= $value['Bans']['date_debut'] ?></td>
-                                            <td> <?= $value['Bans']['date_fin'] ?>
-                                                <?php if ($value['Bans']['date_reset']): ?>
-                                                    <small>
-                                                        <?= $Lang->get('LITEBANS__TIME_LEFT') ?> <?= $value['Bans']['date_reset'] ?>
-                                                    </small>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <?php if ($value['Bans']['active']): ?>
-                                                    <i class="fa fa-check"></i>
-                                                <?php else: ?>
-                                                    <i class="fa fa-times"></i>
-                                                <?php endif; ?>
-                                            </td>
-
+                                            <td> <?= $value['Kicks']['reason'] ?></td>
+                                            <td> <?= $value['Kicks']['date_debut'] ?></td>
                                         </tr>
                                     <?php endforeach; ?>
 
                                     </tbody>
                                 </table>
                             </div>
-                            <?php if (count($bans) >= 10): ?>
+                            <?php if (count($kicks) >= 10): ?>
                                 <?= $this->Paginator->prev('Précédents') ?>
                                 <?= $this->Paginator->numbers() ?>
                                 <?= $this->Paginator->next('Suivants') ?>

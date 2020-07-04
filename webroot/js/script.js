@@ -1,34 +1,47 @@
 $(document).ready(function () {
-    let kvp = document.location['pathname'];
-    let data = kvp.split('&')
-    url = {}
-    url['element'] = data[0].split('/')[2]
-    url['id'] = data[2]
-    $button = $('.click-element')
-    $button.each(function () {
-        if ($(this).data('action') == url.element && $(this).data('id') == url.id) {
-            $(this).addClass('active')
-            if ($(this).data('action') == 'item') {
-                $(this).closest('.collapse').addClass('show').prev().attr('aria-expanded', true)
+
+    $(document).ready(function () {
+        $('#search').keyup(function () {
+            event.preventDefault()
+            let searchList = $('#search-list')
+            let input = $(this).val()
+            let element = {}
+            element['search'] = input
+            if (input.length >= 3) {
+                $.post("/litebans/litebans/getSearchPseudo", element, function (data) {
+                    $('.litebans--form-search').find('.ajax-msg').removeClass('error').empty()
+                    if (data.statut) {
+                        searchList.find('ul').empty();
+                        if (data.list) {
+                            for (let i = 0; i <= data.list.length; i++) {
+                                if (data.list[i] !== undefined) {
+                                    searchList.find('ul').append('<li><a href="#" class="search-pseudo" data-pseudo=' + data.list[i].name + '><i class="fa fa-search"></i>' + data.list[i].name + '</a></li>')
+                                }
+                            }
+                        }
+                        if (data.slug) {
+                            document.location.href = data.slug;
+                        }
+                        $('.search-pseudo').on('click', function () {
+                            event.preventDefault()
+                            let search = $(this).data('pseudo')
+                            $('#search').val(search)
+                            $('#search').attr('value', search)
+                            document.location.href = '/sanctions/profile?search=' + search;
+                        })
+                    } else if (!data.statut && data.list) {
+                        searchList.find('ul').empty();
+                        $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur : </b>'+data.msg);
+                    } else if (!data.statut) {
+                        $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur : </b>'+data.msg);
+                    } else {
+                        $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur : </b>'+data.msg);
+                    }
+                });
+            } else {
+                $('.litebans--form-search').find('.ajax-msg').addClass('error').empty().html('<b>Erreur :</b> Minimum 3 caractère');
+                searchList.find('ul').empty();
             }
-        }
+        })
     })
 })
-
-function string_to_slug(str) {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
-    str = str.toLowerCase();
-
-    // remove accents, swap ñ for n, etc
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to = "aaaaeeeeiiiioooouuuunc------";
-    for (var i = 0, l = from.length; i < l; i++) {
-        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    }
-
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-'); // collapse dashes
-
-    return str;
-}

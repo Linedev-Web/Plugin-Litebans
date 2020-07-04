@@ -10,7 +10,7 @@ class LitebansController extends LitebansAppController
 
     public function index()
     {
-        $this->set('title_for_layout', 'Titre');
+        $this->set('title_for_layout', $this->Lang->get('LITEBANS__TITLE') .'/'. $this->Lang->get('LITEBANS__BANSS'));
 
         $this->loadModel('Litebans.Bans');
         $this->loadModel('Litebans.History');
@@ -40,10 +40,7 @@ class LitebansController extends LitebansAppController
             // Date expiry
             if (isset($bans[$i]['Bans']['until'])) {
                 $bans[$i]['Bans']['date_fin'] = $this->expiry($bans[$i]['Bans']['until']);
-
-            }
-            // Date time
-            if (isset($bans[$i]['Bans']['time']) and isset($bans[$i]['Bans']['until'])) {
+                // Date time
                 $bans[$i]['Bans']['date_reset'] = $this->dateStarAndDateEnd($bans[$i]['Bans']['until']);
             }
         }
