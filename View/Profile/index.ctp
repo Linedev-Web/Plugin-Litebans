@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="liteBans--profile">
-                                        <div class="row  justify-content-start">
+                                        <div class="row justify-content-start">
                                             <div class="col-md-5 mb-3 ml-3">
                                                 <h2>#<?= $history['name'] ?></h2>
                                             </div>
@@ -26,7 +26,8 @@
                                                       method="post" autocomplete="off" data-ajax="true">
 
                                                     <div class="form-group">
-                                                        <label for="search" class="sr-only"><?= $Lang->get('LITEBANS__SEARCH_PSEUDO') ?></label>
+                                                        <label for="search"
+                                                               class="sr-only"><?= $Lang->get('LITEBANS__SEARCH_PSEUDO') ?></label>
                                                         <input type="text" class="form-control" id="search"
                                                                name="search"
                                                                placeholder="<?= $Lang->get('LITEBANS__SEARCH_PSEUDO') ?>">
@@ -41,7 +42,7 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row justify-content-start">
                                             <?php if (count($listBans) >= 1): ?>
                                                 <div class="col-md-5 liteBans--profile-box">
                                                     <dl>
@@ -130,31 +131,35 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" id="bans-tab" data-toggle="tab" href="#bans"
                                            role="tab"
-                                           aria-controls="bans" aria-selected="true"><?= $Lang->get('LITEBANS__BANSS') ?></a>
+                                           aria-controls="bans"
+                                           aria-selected="true"><?= $Lang->get('LITEBANS__BANSS') ?></a>
                                     </li>
                                 <?php endif; ?>
                                 <?php if (count($listMutes) >= 1): ?>
                                     <li class="nav-item">
                                         <a class="nav-link" id="mutes-tab" data-toggle="tab" href="#mutes" role="tab"
-                                           aria-controls="mutes" aria-selected="false"><?= $Lang->get('LITEBANS__MUTESS') ?></a>
+                                           aria-controls="mutes"
+                                           aria-selected="false"><?= $Lang->get('LITEBANS__MUTESS') ?></a>
                                     </li>
                                 <?php endif; ?>
                                 <?php if (count($listKicks) >= 1): ?>
                                     <li class="nav-item">
                                         <a class="nav-link" id="kicks-tab" data-toggle="tab" href="#kicks" role="tab"
-                                           aria-controls="kicks" aria-selected="false"><?= $Lang->get('LITEBANS__KICKSS') ?></a>
+                                           aria-controls="kicks"
+                                           aria-selected="false"><?= $Lang->get('LITEBANS__KICKSS') ?></a>
                                     </li>
                                 <?php endif; ?>
                                 <?php if (count($listWarnings) >= 1): ?>
                                     <li class="nav-item">
                                         <a class="nav-link" id="warnings-tab" data-toggle="tab" href="#warnings"
                                            role="tab"
-                                           aria-controls="warnings" aria-selected="false"><?= $Lang->get('LITEBANS__WARNINGSS') ?></a>
+                                           aria-controls="warnings"
+                                           aria-selected="false"><?= $Lang->get('LITEBANS__WARNINGSS') ?></a>
                                     </li>
                                 <?php endif; ?>
                             </ul>
                             <?php if (count($listBans) >= 1): ?>
-                            <div class="tab-content" id="myTabContent"  data-aos="fade-left">
+                            <div class="tab-content" id="myTabContent" data-aos="fade-left">
                                 <div class="tab-pane fade show active" id="bans" role="tabpanel"
                                      aria-labelledby="bans-tab">
                                     <div class="table-responsive ">
@@ -173,7 +178,8 @@
                                             <tbody>
                                             <?php $i = 0;
                                             foreach ($listBans as $key => $value): $i++ ?>
-                                                <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>"  data-aos-offset="0">
+                                                <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>"
+                                                    data-aos-offset="0">
                                                     <td><?= $value['reason'] ?></td>
                                                     <td>
                                                         <?php if ($value['banned_by_name'] == 'Console'): ?>
@@ -190,10 +196,14 @@
                                                         <?php endif; ?>
                                                     </td>
                                                     <td>
-                                                        <?php if ($value['banned_by_name'] == 'Console'): ?>
+                                                        <?php if ($value['removed_by_name'] == 'Console'): ?>
                                                             <img src="https://crafatar.com/avatars/f78a4d8d-d51b-4b39-98a3-230f2de0c670?size=32"
-                                                                 alt="<?= $value['banned_by_name'] ?>"
-                                                                 title="<?= $value['banned_by_name'] ?>">
+                                                                 alt="<?= $value['removed_by_name'] ?>"
+                                                                 title="<?= $value['removed_by_name'] ?>">
+                                                        <?php elseif ($value['removed_by_uuid'] != null || $value['removed_by_name'] != null): ?>
+                                                            <img src="https://crafatar.com/avatars/606e2ff0-ed77-4842-9d6c-e1d3321c7838?size=32"
+                                                                 alt="<?= $value['removed_by_name'] ?>"
+                                                                 title="<?= $value['removed_by_name'] ?>">
                                                         <?php else: ?>
                                                             <div class="liteban--user">
                                                                 <img src="https://crafatar.com/avatars/<?= $value['removed_by_uuid'] ?>?size=32"
@@ -245,7 +255,8 @@
                                                 <tbody>
                                                 <?php $i = 0;
                                                 foreach ($listMutes as $key => $value): $i++ ?>
-                                                    <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0">
+                                                    <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>"
+                                                        data-aos-offset="0">
                                                         <td><?= $value['reason'] ?></td>
                                                         <td>
                                                             <?php if ($value['banned_by_name'] == 'Console'): ?>
@@ -262,10 +273,14 @@
                                                             <?php endif; ?>
                                                         </td>
                                                         <td>
-                                                            <?php if ($value['banned_by_name'] == 'Console'): ?>
+                                                            <?php if ($value['removed_by_name'] == 'Console'): ?>
                                                                 <img src="https://crafatar.com/avatars/f78a4d8d-d51b-4b39-98a3-230f2de0c670?size=32"
-                                                                     alt="<?= $value['banned_by_name'] ?>"
-                                                                     title="<?= $value['banned_by_name'] ?>">
+                                                                     alt="<?= $value['removed_by_name'] ?>"
+                                                                     title="<?= $value['removed_by_name'] ?>">
+                                                            <?php elseif ($value['removed_by_uuid'] != null || $value['removed_by_name'] != null): ?>
+                                                                <img src="https://crafatar.com/avatars/606e2ff0-ed77-4842-9d6c-e1d3321c7838?size=32"
+                                                                     alt="<?= $value['removed_by_name'] ?>"
+                                                                     title="<?= $value['removed_by_name'] ?>">
                                                             <?php else: ?>
                                                                 <div class="liteban--user">
                                                                     <img src="https://crafatar.com/avatars/<?= $value['removed_by_uuid'] ?>?size=32"
@@ -315,7 +330,8 @@
                                                 <tbody>
                                                 <?php $i = 0;
                                                 foreach ($listKicks as $key => $value): $i++ ?>
-                                                    <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0">
+                                                    <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>"
+                                                        data-aos-offset="0">
                                                         <td><?= $value['reason'] ?></td>
                                                         <td>
                                                             <?php if ($value['banned_by_name'] == 'Console'): ?>
@@ -359,7 +375,8 @@
                                                 <tbody>
                                                 <?php $i = 0;
                                                 foreach ($listWarnings as $key => $value): $i++ ?>
-                                                    <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0">
+                                                    <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>"
+                                                        data-aos-offset="0">
                                                         <td><?= $value['reason'] ?></td>
                                                         <td>
                                                             <?php if ($value['banned_by_name'] == 'Console'): ?>
@@ -380,6 +397,10 @@
                                                                 <img src="https://crafatar.com/avatars/f78a4d8d-d51b-4b39-98a3-230f2de0c670?size=32"
                                                                      alt="<?= $value['banned_by_name'] ?>"
                                                                      title="<?= $value['banned_by_name'] ?>">
+                                                            <?php elseif ($value['removed_by_uuid'] != null || $value['removed_by_name'] != null): ?>
+                                                                <img src="https://crafatar.com/avatars/606e2ff0-ed77-4842-9d6c-e1d3321c7838?size=32"
+                                                                     alt="<?= $value['removed_by_name'] ?>"
+                                                                     title="<?= $value['removed_by_name'] ?>">
                                                             <?php else: ?>
                                                                 <div class="liteban--user">
                                                                     <img src="https://crafatar.com/avatars/<?= $value['removed_by_uuid'] ?>?size=32"

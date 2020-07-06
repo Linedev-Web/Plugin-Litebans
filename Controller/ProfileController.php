@@ -21,7 +21,7 @@ class ProfileController extends LitebansAppController
             $bans = $this->Bans->getFirstUuid($history['uuid']);
             $listBans = [];
             foreach ($bans as $key => $value) {
-                $listBans[$key]['reason'] = $value['Bans']['reason'];
+                $listBans[$key]['reason'] = $this->clean($value['Bans']['reason']);
                 $listBans[$key]['banned_by_name'] = $value['Bans']['banned_by_name'];
                 $listBans[$key]['banned_by_uuid'] = $value['Bans']['banned_by_uuid'];
                 $listBans[$key]['removed_by_uuid'] = $value['Bans']['removed_by_uuid'];
@@ -36,11 +36,11 @@ class ProfileController extends LitebansAppController
             $mutes = $this->Mutes->getFirstUuid($history['uuid']);
             $listMutes = [];
             foreach ($mutes as $key => $value) {
-                $listMutes[$key]['reason'] = $value['Mutes']['reason'];
+                $listMutes[$key]['reason'] = $this->clean($value['Mutes']['reason']);
                 $listMutes[$key]['banned_by_name'] = $value['Mutes']['banned_by_name'];
                 $listMutes[$key]['banned_by_uuid'] = $value['Mutes']['banned_by_uuid'];
-                $listBans[$key]['removed_by_uuid'] = $value['Mutes']['removed_by_uuid'];
-                $listBans[$key]['removed_by_name'] = $value['Mutes']['removed_by_name'];
+                $listMutes[$key]['removed_by_uuid'] = $value['Mutes']['removed_by_uuid'];
+                $listMutes[$key]['removed_by_name'] = $value['Mutes']['removed_by_name'];
                 $listMutes[$key]['time'] = $this->millis_to_date($value['Mutes']['time']);
                 $listMutes[$key]['until'] = $this->expiry($value['Mutes']['until']);
                 $listMutes[$key]['server_origin'] = $value['Mutes']['server_origin'];
@@ -51,7 +51,7 @@ class ProfileController extends LitebansAppController
             $kicks = $this->Kicks->getFirstUuid($history['uuid']);
             $listKicks = [];
             foreach ($kicks as $key => $value) {
-                $listKicks[$key]['reason'] = $value['Kicks']['reason'];
+                $listKicks[$key]['reason'] = $this->clean($value['Kicks']['reason']);
                 $listKicks[$key]['banned_by_name'] = $value['Kicks']['banned_by_name'];
                 $listKicks[$key]['banned_by_uuid'] = $value['Kicks']['banned_by_uuid'];
                 $listKicks[$key]['time'] = $this->millis_to_date($value['Kicks']['time']);
@@ -61,7 +61,7 @@ class ProfileController extends LitebansAppController
             $warnings = $this->Warnings->getFirstUuid($history['uuid']);
             $listWarnings = [];
             foreach ($warnings as $key => $value) {
-                $listWarnings[$key]['reason'] = $value['Warnings']['reason'];
+                $listWarnings[$key]['reason'] = $this->clean($value['Warnings']['reason']);
                 $listWarnings[$key]['banned_by_name'] = $value['Warnings']['banned_by_name'];
                 $listWarnings[$key]['banned_by_uuid'] = $value['Warnings']['banned_by_uuid'];
                 $listBans[$key]['removed_by_uuid'] = $value['Warnings']['removed_by_uuid'];

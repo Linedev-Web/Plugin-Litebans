@@ -10,13 +10,13 @@ class LitebansController extends LitebansAppController
 
     public function index()
     {
-        $this->set('title_for_layout', $this->Lang->get('LITEBANS__TITLE') .'/'. $this->Lang->get('LITEBANS__BANSS'));
+        $this->set('title_for_layout', $this->Lang->get('LITEBANS__TITLE') . '/' . $this->Lang->get('LITEBANS__BANSS'));
 
         $this->loadModel('Litebans.Bans');
         $this->loadModel('Litebans.History');
 
         $this->paginate = array(
-            'fields' => array('Bans.id', 'Bans.banned_by_name', 'Bans.reason', 'Bans.time', 'Bans.until', 'Bans.active', 'Bans.uuid'),
+            'fields' => array('Bans.id', 'Bans.banned_by_name', 'Bans.banned_by_uuid', 'Bans.reason', 'Bans.time', 'Bans.until', 'Bans.active', 'Bans.uuid'),
             'order' => 'id DESC',
             'limit' => 10,
             'recursive' => 1,
@@ -42,6 +42,11 @@ class LitebansController extends LitebansAppController
                 $bans[$i]['Bans']['date_fin'] = $this->expiry($bans[$i]['Bans']['until']);
                 // Date time
                 $bans[$i]['Bans']['date_reset'] = $this->dateStarAndDateEnd($bans[$i]['Bans']['until']);
+            }
+
+            // Clean reason for minecraft
+            if (isset($kicks[$i]['Bans']['reason'])) {
+                $kicks[$i]['Bans']['reason'] = $this->clean($kicks[$i]['Bans']['reason']);
             }
         }
         $this->set(compact('bans'));

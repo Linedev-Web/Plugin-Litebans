@@ -18,7 +18,7 @@
                                        class="nav-link"><?= $Lang->get('LITEBANS__BANSS') ?></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/sanctions/mutes" class="nav-link"><?= $Lang->get('LITEBANS__MUTESS') ?></a>
+                                    <a href="/sanctions/mutes" class="nav-link"><?= $Lang->get('LITEBANS__WARNINGSS') ?></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/sanctions/kicks" class="nav-link"><?= $Lang->get('LITEBANS__KICKSS') ?></a>
@@ -76,11 +76,15 @@
                                                     <img src="https://crafatar.com/avatars/f78a4d8d-d51b-4b39-98a3-230f2de0c670?size=32"
                                                          alt="<?= $value['Warnings']['banned_by_name'] ?>"
                                                          title="<?= $value['Warnings']['banned_by_name'] ?>">
+                                                <?php elseif ($value['Warnings']['removed_by_uuid'] != null || $value['Warnings']['removed_by_name'] != null): ?>
+                                                    <img src="https://crafatar.com/avatars/606e2ff0-ed77-4842-9d6c-e1d3321c7838?size=32"
+                                                         alt="<?= $value['Warnings']['removed_by_name'] ?>"
+                                                         title="<?= $value['Warnings']['removed_by_name'] ?>">
                                                 <?php else: ?>
                                                     <div class="liteban--user">
-                                                        <img src="https://crafatar.com/avatars/<?= $value['Warnings']['uuid'] ?>?size=32"
-                                                             alt="<?= $value['Warnings']['name'] ?>"
-                                                             title="<?= $value['Warnings']['name'] ?>">
+                                                        <img src="https://crafatar.com/avatars/<?= $value['Warnings']['banned_by_uuid'] ?>?size=32"
+                                                             alt="<?= $value['Warnings']['banned_by_name'] ?>"
+                                                             title="<?= $value['Warnings']['banned_by_name'] ?>">
                                                         <span><?= $value['Warnings']['banned_by_name'] ?></span>
                                                     </div>
                                                 <?php endif; ?>

@@ -5,13 +5,13 @@ class MutesController extends LitebansAppController
 
     public function index()
     {
-        $this->set('title_for_layout', $this->Lang->get('LITEBANS__TITLE') .'/'. $this->Lang->get('LITEBANS__MUTESS'));
+        $this->set('title_for_layout', $this->Lang->get('LITEBANS__TITLE') . '/' . $this->Lang->get('LITEBANS__MUTESS'));
 
         $this->loadModel('Litebans.Mutes');
         $this->loadModel('Litebans.History');
 
         $this->paginate = array(
-            'fields' => array('Mutes.id', 'Mutes.banned_by_name', 'Mutes.reason', 'Mutes.time', 'Mutes.until', 'Mutes.active', 'Mutes.uuid'),
+            'fields' => array('Mutes.id', 'Mutes.banned_by_name', 'Mutes.banned_by_uuid', 'Mutes.reason', 'Mutes.time', 'Mutes.until', 'Mutes.active', 'Mutes.uuid'),
             'order' => 'id DESC',
             'limit' => 10,
             'recursive' => 1,
@@ -37,6 +37,11 @@ class MutesController extends LitebansAppController
                 $mutes[$i]['Mutes']['date_fin'] = $this->expiry($mutes[$i]['Mutes']['until']);
                 // Date time
                 $mutes[$i]['Mutes']['date_reset'] = $this->dateStarAndDateEnd($mutes[$i]['Mutes']['until']);
+            }
+
+            // Clean reason for minecraft
+            if (isset($kicks[$i]['Mutes']['reason'])) {
+                $kicks[$i]['Mutes']['reason'] = $this->clean($kicks[$i]['Mutes']['reason']);
             }
         }
         $this->set(compact('mutes'));
