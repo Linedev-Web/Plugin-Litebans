@@ -2,7 +2,7 @@
 
 class History extends LitebansAppModel
 {
-    public $useTable = 'History';
+    public $useTable = 'history';
     public $primaryKey = 'uuid';
 
 
