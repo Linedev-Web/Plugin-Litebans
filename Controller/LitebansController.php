@@ -18,7 +18,7 @@ class LitebansController extends LitebansAppController
         $this->paginate = array(
             'fields' => array('Bans.id', 'Bans.banned_by_name', 'Bans.banned_by_uuid', 'Bans.reason', 'Bans.time', 'Bans.until', 'Bans.active', 'Bans.uuid'),
             'order' => 'id DESC',
-            'limit' => 10,
+            'limit' => 15,
             'recursive' => 1,
             'paramType' => 'querystring',
         );

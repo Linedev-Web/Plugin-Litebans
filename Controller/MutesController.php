@@ -13,7 +13,7 @@ class MutesController extends LitebansAppController
         $this->paginate = array(
             'fields' => array('Mutes.id', 'Mutes.banned_by_name', 'Mutes.banned_by_uuid', 'Mutes.reason', 'Mutes.time', 'Mutes.until', 'Mutes.active', 'Mutes.uuid'),
             'order' => 'id DESC',
-            'limit' => 10,
+            'limit' => 15,
             'recursive' => 1,
             'paramType' => 'querystring',
         );

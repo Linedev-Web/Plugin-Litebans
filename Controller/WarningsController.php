@@ -13,7 +13,7 @@ class WarningsController extends LitebansAppController
         $this->paginate = array(
             'fields' => array('Warnings.id', 'Warnings.banned_by_name', 'Warnings.banned_by_uuid', 'Warnings.reason', 'Warnings.time', 'Warnings.until', 'Warnings.active', 'Warnings.uuid'),
             'order' => 'id DESC',
-            'limit' => 10,
+            'limit' => 15,
             'recursive' => 1,
             'paramType' => 'querystring',
         );

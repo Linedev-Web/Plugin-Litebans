@@ -61,7 +61,7 @@
                                     </thead>
                                     <tbody>
                                     <?php $i=0; foreach ($bans as $key => $value): $i++ ?>
-                                        <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0">
+                                        <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0" data-aos-once="true">
                                             <td>
                                                 <a href="/sanctions/profile?search=<?= $value['Bans']['name'] ?>"
                                                    class="liteban--user">
