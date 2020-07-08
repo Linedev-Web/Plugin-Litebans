@@ -66,7 +66,8 @@
                                     <tbody>
                                     <?php $i = 0;
                                     foreach ($mutes as $key => $value): $i++ ?>
-                                        <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0" data-aos-once="true">
+                                        <tr data-aos="fade-left" data-aos-delay="<?= $i * 100 ?>" data-aos-offset="0"
+                                            data-aos-once="true">
                                             <td>
                                                 <a href="/sanctions/profile?search=<?= $value['Mutes']['name'] ?>"
                                                    class="liteban--user">
@@ -81,17 +82,17 @@
                                                     <img src="https://crafatar.com/avatars/f78a4d8d-d51b-4b39-98a3-230f2de0c670?size=32"
                                                          alt="<?= $value['Mutes']['banned_by_name'] ?>"
                                                          title="<?= $value['Mutes']['banned_by_name'] ?>">
-                                                <?php elseif ($value['Mutes']['removed_by_uuid'] != null || $value['Mutes']['removed_by_name'] != null): ?>
-                                                    <img src="https://crafatar.com/avatars/606e2ff0-ed77-4842-9d6c-e1d3321c7838?size=32"
-                                                         alt="<?= $value['Mutes']['removed_by_name'] ?>"
-                                                         title="<?= $value['Mutes']['removed_by_name'] ?>">
-                                                <?php else: ?>
+                                                <?php elseif (!empty($value['Mutes']['banned_by_name']) || ($value['Mutes']['banned_by_name'] != null && $value['Mutes']['banned_by_uuid'] != null)): ?>
                                                     <div class="liteban--user">
                                                         <img src="https://crafatar.com/avatars/<?= $value['Mutes']['banned_by_uuid'] ?>?size=32"
                                                              alt="<?= $value['Mutes']['banned_by_name'] ?>"
                                                              title="<?= $value['Mutes']['banned_by_name'] ?>">
                                                         <span><?= $value['Mutes']['banned_by_name'] ?></span>
                                                     </div>
+                                                <?php else: ?>
+                                                    <img src="https://crafatar.com/avatars/606e2ff0-ed77-4842-9d6c-e1d3321c7838?size=32"
+                                                         alt="<?= $value['Mutes']['removed_by_name'] ?>"
+                                                         title="<?= $value['Mutes']['removed_by_name'] ?>">
                                                 <?php endif; ?>
                                             </td>
                                             <td> <?= $value['Mutes']['reason'] ?></td>

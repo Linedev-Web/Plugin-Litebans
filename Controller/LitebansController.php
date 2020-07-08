@@ -16,7 +16,7 @@ class LitebansController extends LitebansAppController
         $this->loadModel('Litebans.History');
 
         $this->paginate = array(
-            'fields' => array('Bans.id', 'Bans.banned_by_name', 'Bans.banned_by_uuid', 'Bans.reason', 'Bans.time', 'Bans.until', 'Bans.active', 'Bans.uuid'),
+            'fields' => array('Bans.id', 'Bans.banned_by_name', 'Bans.banned_by_uuid', 'Bans.removed_by_name', 'Bans.removed_by_uuid', 'Bans.reason', 'Bans.time', 'Bans.until', 'Bans.active', 'Bans.uuid'),
             'order' => 'id DESC',
             'limit' => 15,
             'recursive' => 1,
