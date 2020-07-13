@@ -51,11 +51,13 @@ class ProfileController extends LitebansAppController
             $kicks = $this->Kicks->getFirstUuid($history['uuid']);
             $listKicks = [];
             foreach ($kicks as $key => $value) {
-                $listKicks[$key]['reason'] = $this->clean($value['Kicks']['reason']);
-                $listKicks[$key]['banned_by_name'] = $value['Kicks']['banned_by_name'];
-                $listKicks[$key]['banned_by_uuid'] = $value['Kicks']['banned_by_uuid'];
-                $listKicks[$key]['time'] = $this->millis_to_date($value['Kicks']['time']);
-                $listKicks[$key]['server_origin'] = $value['Kicks']['server_origin'];
+                if ($value['Kicks']['banned_by_name'] !== 'Console') {
+                    $listKicks[$key]['reason'] = $this->clean($value['Kicks']['reason']);
+                    $listKicks[$key]['banned_by_name'] = $value['Kicks']['banned_by_name'];
+                    $listKicks[$key]['banned_by_uuid'] = $value['Kicks']['banned_by_uuid'];
+                    $listKicks[$key]['time'] = $this->millis_to_date($value['Kicks']['time']);
+                    $listKicks[$key]['server_origin'] = $value['Kicks']['server_origin'];
+                }
             }
 
             $warnings = $this->Warnings->getFirstUuid($history['uuid']);

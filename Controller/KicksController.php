@@ -13,6 +13,7 @@ class KicksController extends LitebansAppController
         $this->paginate = array(
             'fields' => array('Kicks.id', 'Kicks.banned_by_name', 'Kicks.banned_by_uuid', 'Kicks.reason', 'Kicks.time', 'Kicks.uuid'),
             'order' => 'id DESC',
+            'conditions' => array("not" => array('Kicks.banned_by_name' => 'Console')) ,
             'limit' => 15,
             'recursive' => 1,
             'paramType' => 'querystring',
